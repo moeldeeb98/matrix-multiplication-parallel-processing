@@ -1,6 +1,38 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+void autoGenerateMatrix(int row, int col, int** matrix){
+    int i,j;
+    for(i=0; i<row; i++){
+        for(j=0; j<col; j++){
+            matrix[i][j] = rand()%20;
+        }
+    }
+
+}
+
+void readMatrixFromUser(int row, int col, int** matrix){
+    int i,j;
+    for(i=0; i<row; i++){
+        for(j=0; j<col; j++){
+            scanf("%d", &matrix[i][j]);
+        }
+    }
+}
+
+void printMatrix(int row, int col, int** matrix){
+    int i,j;
+    printf("\n==================================\n");
+    for(i=0; i<row; i++){
+        for(j=0; j<col; j++){
+            printf("%d ", matrix[i][j]);
+        }
+        printf("\n");
+    }
+    printf("==================================\n");
+
+}
+
 int main(){
 
     int** mat1;
@@ -21,12 +53,18 @@ int main(){
         mat1[i] = malloc(c1 * sizeof(int));
     }
     // read the values of the first matrix
-    printf("Enter the value of the matrix:\n");
-    for(i=0; i<r1; i++){
-        for(j=0; j<c1; j++){
-            scanf("%d", &mat1[i][j]);
-        }
+    int status = 1;
+    printf("(1) auto genertate\n");
+    printf("(2) Enter the value of the matrix:\n");
+    scanf("%d", &status);
+
+    if(status == 1){
+        autoGenerateMatrix(r1, c1, mat1);
+    }else{
+        readMatrixFromUser(r1, c1, mat1);
     }
+
+    printMatrix(r1, c1, mat1);
 
 //=================================================================
 
@@ -36,20 +74,28 @@ int main(){
     scanf("%d", &r2);
     printf("Col : ");
     scanf("%d", &c2);
+
+    if(c1 != r2){
+        printf("incompatible Matrices\n");
+        return 0;
+    }
     // build the second matrix
     mat2 = malloc(r2 * sizeof(int*));
     for(i = 0; i< r2; i++){
         mat2[i] = malloc(c2 * sizeof(int));
     }
     // read the values of the second matrix
-    printf("Enter the value of the matrix:\n");
-    for(i=0; i<r2; i++){
-        for(j=0; j<c2; j++){
-            scanf("%d", &mat2[i][j]);
-            // printf("\n %d \n", mat2[i][j]);
-        }
+    printf("(1) auto genertate\n");
+    printf("(2) Enter the value of the matrix:\n");
+    scanf("%d", &status);
+
+    if(status == 1){
+        autoGenerateMatrix(r2, c2, mat2);
+    }else{
+        readMatrixFromUser(r2, c2, mat2);
     }
 
+    printMatrix(r2, c2, mat2);
 //======================================================================
 
     // build the result matrix
@@ -69,15 +115,8 @@ int main(){
     }
 
     // print the result matrix
-    printf("\n==================================\n");
-    for(i=0; i<r1; i++){
-        for(j=0; j<c2; j++){
-            printf("%d ", mat3[i][j]);
-        }
-        printf("\n");
-    }
-    printf("==================================\n");
-
+    printf("\nThe Result Matrix\n");
+    printMatrix(r1, c2, mat3);
  
     return 0;
 }
